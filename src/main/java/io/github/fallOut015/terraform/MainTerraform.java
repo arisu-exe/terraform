@@ -52,10 +52,10 @@ public class MainTerraform  {
     static Tool middleTool;
     static Tool rightTool;
 
-    static Button TOOL_PLACER_BUTTON = new ToolButton(10, 10, Tools.PLACER);
-    static Button TOOL_SELECTOR_BUTTON = new ToolButton(10 + 30, 10, Tools.SELECTOR);
-    static Button TOOL_MOVER_BUTTON = new ToolButton(10, 10 + 30, Tools.MOVER);
-    static Button TOOL_ROTATOR_BUTTON = new ToolButton(10 + 30, 10 + 30, Tools.ROTATOR);
+    static final Button TOOL_PLACER_BUTTON = new ToolButton(10, 10, Tools.PLACER);
+    static final Button TOOL_SELECTOR_BUTTON = new ToolButton(10 + 30, 10, Tools.SELECTOR);
+    static final Button TOOL_MOVER_BUTTON = new ToolButton(10, 10 + 30, Tools.MOVER);
+    static final Button TOOL_ROTATOR_BUTTON = new ToolButton(10 + 30, 10 + 30, Tools.ROTATOR);
 
     static {
         editing = false;
