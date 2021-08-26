@@ -53,14 +53,16 @@ public class MainTerraform  {
     static Tool rightTool;
 
     static Button TOOL_PLACER_BUTTON = new ToolButton(10, 10, Tools.PLACER);
-    static Button TOOL_SELECTOR_BUTTON = new ToolButton(10 + 20 + 10, 10, Tools.SELECTOR);
+    static Button TOOL_SELECTOR_BUTTON = new ToolButton(10 + 30, 10, Tools.SELECTOR);
+    static Button TOOL_MOVER_BUTTON = new ToolButton(10, 10 + 30, Tools.MOVER);
+    static Button TOOL_ROTATOR_BUTTON = new ToolButton(10 + 30, 10 + 30, Tools.ROTATOR);
 
     static {
         editing = false;
 
         leftTool = Tools.PLACER;
         middleTool = Tools.MOVER;
-        rightTool = Tools.ROTATER;
+        rightTool = Tools.ROTATOR;
     }
 
     public static void setTool(Tool tool) {
@@ -162,6 +164,8 @@ public class MainTerraform  {
                 } else if (MainTerraform.editing && event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
                     MainTerraform.TOOL_PLACER_BUTTON.render(event.getMatrixStack(), (int) Minecraft.getInstance().mouseHandler.xpos(), (int) Minecraft.getInstance().mouseHandler.ypos(), event.getPartialTicks());
                     MainTerraform.TOOL_SELECTOR_BUTTON.render(event.getMatrixStack(), (int) Minecraft.getInstance().mouseHandler.xpos(), (int) Minecraft.getInstance().mouseHandler.ypos(), event.getPartialTicks());
+                    MainTerraform.TOOL_MOVER_BUTTON.render(event.getMatrixStack(), (int) Minecraft.getInstance().mouseHandler.xpos(), (int) Minecraft.getInstance().mouseHandler.ypos(), event.getPartialTicks());
+                    MainTerraform.TOOL_ROTATOR_BUTTON.render(event.getMatrixStack(), (int) Minecraft.getInstance().mouseHandler.xpos(), (int) Minecraft.getInstance().mouseHandler.ypos(), event.getPartialTicks());
                 }
             }
         }
