@@ -65,7 +65,7 @@ public class MainTerraform  {
         rightTool = Tools.ROTATOR;
     }
 
-    public static void setTool(Tool tool) {
+    public static void setTool(int mouseButton, Tool tool) {
         MainTerraform.leftTool = tool;
     }
 
@@ -134,23 +134,37 @@ public class MainTerraform  {
             if(MainTerraform.editing && Minecraft.getInstance().screen == null) {
                 event.setCanceled(true);
 
-                if(event.getButton() == GLFW.GLFW_MOUSE_BUTTON_1) {
-                    if(event.getAction() == GLFW.GLFW_PRESS) {
-                        MainTerraform.leftTool.onPress();
-                    } else if(event.getAction() == GLFW.GLFW_RELEASE) {
-                        MainTerraform.leftTool.onRelease();
-                    }
-                } else if(event.getButton() == GLFW.GLFW_MOUSE_BUTTON_2) {
-                    if(event.getAction() == GLFW.GLFW_PRESS) {
-                        MainTerraform.rightTool.onPress();
-                    } else if(event.getAction() == GLFW.GLFW_RELEASE) {
-                        MainTerraform.rightTool.onRelease();
-                    }
-                } else if(event.getButton() == GLFW.GLFW_MOUSE_BUTTON_3) {
-                    if(event.getAction() == GLFW.GLFW_PRESS) {
-                        MainTerraform.middleTool.onPress();
-                    } else if(event.getAction() == GLFW.GLFW_RELEASE) {
-                        MainTerraform.middleTool.onRelease();
+                if(MainTerraform.TOOL_MOVER_BUTTON.isHovered()) {
+                    ((ToolButton) MainTerraform.TOOL_MOVER_BUTTON).setMouseButton(event.getButton());
+                    MainTerraform.TOOL_MOVER_BUTTON.onClick(Minecraft.getInstance().mouseHandler.xpos(), Minecraft.getInstance().mouseHandler.ypos());
+                } else if(MainTerraform.TOOL_ROTATOR_BUTTON.isHovered()) {
+                    ((ToolButton) MainTerraform.TOOL_ROTATOR_BUTTON).setMouseButton(event.getButton());
+                    MainTerraform.TOOL_ROTATOR_BUTTON.onClick(Minecraft.getInstance().mouseHandler.xpos(), Minecraft.getInstance().mouseHandler.ypos());
+                } else if(MainTerraform.TOOL_PLACER_BUTTON.isHovered()) {
+                    ((ToolButton) MainTerraform.TOOL_PLACER_BUTTON).setMouseButton(event.getButton());
+                    MainTerraform.TOOL_PLACER_BUTTON.onClick(Minecraft.getInstance().mouseHandler.xpos(), Minecraft.getInstance().mouseHandler.ypos());
+                } else if(MainTerraform.TOOL_SELECTOR_BUTTON.isHovered()) {
+                    ((ToolButton) MainTerraform.TOOL_SELECTOR_BUTTON).setMouseButton(event.getButton());
+                    MainTerraform.TOOL_SELECTOR_BUTTON.onClick(Minecraft.getInstance().mouseHandler.xpos(), Minecraft.getInstance().mouseHandler.ypos());
+                } else {
+                    if(event.getButton() == GLFW.GLFW_MOUSE_BUTTON_1) {
+                        if(event.getAction() == GLFW.GLFW_PRESS) {
+                            MainTerraform.leftTool.onPress();
+                        } else if(event.getAction() == GLFW.GLFW_RELEASE) {
+                            MainTerraform.leftTool.onRelease();
+                        }
+                    } else if(event.getButton() == GLFW.GLFW_MOUSE_BUTTON_2) {
+                        if(event.getAction() == GLFW.GLFW_PRESS) {
+                            MainTerraform.rightTool.onPress();
+                        } else if(event.getAction() == GLFW.GLFW_RELEASE) {
+                            MainTerraform.rightTool.onRelease();
+                        }
+                    } else if(event.getButton() == GLFW.GLFW_MOUSE_BUTTON_3) {
+                        if(event.getAction() == GLFW.GLFW_PRESS) {
+                            MainTerraform.middleTool.onPress();
+                        } else if(event.getAction() == GLFW.GLFW_RELEASE) {
+                            MainTerraform.middleTool.onRelease();
+                        }
                     }
                 }
             }

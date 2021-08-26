@@ -12,6 +12,7 @@ public class ToolButton extends ImageButton {
     final Tool tool;
     final int u, v;
     boolean depressed;
+    int mouseButton;
 
     public ToolButton(int x, int y, final Tool tool) {
         super(x, y, 20, 20, tool.getU(), tool.getV(), 20, MainTerraform.WIDGETS_TEXTURE, 256, 256, button -> {}, Button.NO_TOOLTIP, tool.getTranslated());
@@ -23,10 +24,9 @@ public class ToolButton extends ImageButton {
 
     @Override
     public void onPress() {
-        MainTerraform.setTool(this.tool);
+        MainTerraform.setTool(this.mouseButton, this.tool);
         this.depressed = true;
     }
-
     @Override
     public void renderButton(PoseStack poseStack, int mx, int my, float partialTicks) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -38,5 +38,9 @@ public class ToolButton extends ImageButton {
         if (this.isHovered()) {
             this.renderToolTip(poseStack, mx, my);
         }
+    }
+
+    public void setMouseButton(int mouseButton) {
+        this.mouseButton = mouseButton;
     }
 }
