@@ -16,6 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -24,7 +25,7 @@ public class PaintbrushTool extends Tool {
     boolean active;
 
     public PaintbrushTool() {
-        super(80, 0, "paintbrush", Map.of("diameter", 10, "shape", PaintbrushShape.SQUARE));
+        super(80, 0, "paintbrush", Map.of("diameter", 10, "shape", PaintbrushShape.SQUARE, "paintNonSolidBlocks", false));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PaintbrushTool extends Tool {
     protected void postUpdate() {
         if(this.active) {
             BlockPos pos = new BlockPos(Minecraft.getInstance().hitResult.getLocation()).below();
-            ((PaintbrushShape) this.get("shape")).accept(pos, (Integer) this.get("diameter"));
+            ((PaintbrushShape) this.get("shape")).accept(pos, (Integer) this.get("diameter"), (Boolean) this.get("paintNonSolidBlocks"));
         }
     }
     @Override
@@ -84,29 +85,36 @@ public class PaintbrushTool extends Tool {
         multibuffersource$buffersource.endBatch(Sheets.translucentCullBlockSheet());
     }
 
-    public enum PaintbrushShape implements BiConsumer<BlockPos, Integer> {
-        CIRCLE((pos, diameter) -> {
+    public enum PaintbrushShape implements TriConsumer<BlockPos, Integer, Boolean> {
+        CIRCLE((pos, diameter, paintsNonSolidBlocks) -> {
             // TODO
         }),
-        SQUARE((pos, diameter) -> {
+        SQUARE((pos, diameter, paintsNonSolidBlocks) -> {
             for(double i = -(((double) ((int) diameter)) / 2d); i < (((double) ((int) diameter)) / 2d); ++ i) {
                 for(double j = -(((double) ((int) diameter)) / 2d); j < (((double) ((int) diameter)) / 2d); ++ j) {
                     if(!Minecraft.getInstance().level.isEmptyBlock(pos.offset(i, 0, j))) {
-                        Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
+                        if(paintsNonSolidBlocks) {
+                            Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
+                        } else {
+                            if(Minecraft.getInstance().level.getBlockState(pos.offset(i, 0, j)).getMaterial().isSolid()) {
+                                Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
+                            }
+                        }
+
                     }
                 }
             }
         });
 
-        final BiConsumer<BlockPos, Integer> placeMethod;
+        final TriConsumer<BlockPos, Integer, Boolean> placeMethod;
 
-        PaintbrushShape(BiConsumer<BlockPos, Integer> placeMethod) {
+        PaintbrushShape(TriConsumer<BlockPos, Integer, Boolean> placeMethod) {
             this.placeMethod = placeMethod;
         }
 
         @Override
-        public void accept(BlockPos blockPos, Integer integer) {
-            this.placeMethod.accept(blockPos, integer);
+        public void accept(BlockPos blockPos, Integer integer, Boolean paintNonSolidBlocks) {
+            this.placeMethod.accept(blockPos, integer, paintNonSolidBlocks);
         }
     }
 }

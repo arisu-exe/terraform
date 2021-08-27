@@ -142,7 +142,8 @@ public class MainTerraform  {
                 }
                 if(Arrays.stream(MainTerraform.tools).anyMatch(Tool::hasSettings)) {
                     event.getMatrixStack().pushPose();
-                    GuiUtils.drawGradientRect(event.getMatrixStack().last().pose(), 400, 15, 120, 120, 15, 0x000000, 0x000000);
+                    GuiUtils.drawGradientRect(event.getMatrixStack().last().pose(), 500, 15, 120, 120, 15, 0x000000, 0x000000);
+//                    Arrays.stream(MainTerraform.tools).if
                     event.getMatrixStack().popPose();
                 }
             }
