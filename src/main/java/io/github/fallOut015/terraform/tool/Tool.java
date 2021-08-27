@@ -2,6 +2,7 @@ package io.github.fallOut015.terraform.tool;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 public abstract class Tool {
     final int u, v;
@@ -25,5 +26,21 @@ public abstract class Tool {
     }
     public final Component getTranslated() {
         return this.translated;
+    }
+    public boolean isToolForOutlining() {
+        return true;
+    }
+    public void onRenderUpdate(final RenderWorldLastEvent event) {
+        if(this.rendersOutline()) {
+            this.renderOutline(event);
+        }
+        this.onUpdate();
+    }
+
+    protected abstract void onUpdate();
+    protected void renderOutline(final RenderWorldLastEvent event) {
+    }
+    protected boolean rendersOutline() {
+        return true;
     }
 }

@@ -1,4 +1,11 @@
 {
   "gui.placer" : "Placer",
-  "gui.selector" : "Selector"
+  "gui.selector" : "Selector",
+  "gui.mover" : "Mover",
+  "gui.rotator" : "Rotator",
+  "gui.paintbrush" : "Paintbrush",
+
+  "gui.left_mouse_button" : "L",
+  "gui.right_mouse_button" : "R",
+  "gui.middle_mouse_button" : "M"
 }
