@@ -34,10 +34,11 @@ public abstract class Tool {
         return true;
     }
     public void onRenderUpdate(final RenderWorldLastEvent event) {
+        this.calculatePointer();
         if(this.rendersOutline()) {
             this.renderOutline(event);
         }
-        this.onUpdate();
+        this.postUpdate();
     }
     public <T> T get(String key) {
         return this.settings.get(key);
@@ -45,8 +46,12 @@ public abstract class Tool {
     public void set(String key, Object value) {
         this.settings.set(key, value);
     }
+    public boolean hasSettings() {
+        return this.settings.hasSettings();
+    }
 
-    protected abstract void onUpdate();
+    protected abstract void calculatePointer();
+    protected abstract void postUpdate();
     protected void renderOutline(final RenderWorldLastEvent event) {
     }
     protected boolean rendersOutline() {

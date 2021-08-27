@@ -19,7 +19,11 @@ public class RotatorTool extends Tool {
         this.oldy = Minecraft.getInstance().mouseHandler.ypos();
     }
     @Override
-    protected void onUpdate() {
+    protected void calculatePointer() {
+
+    }
+    @Override
+    protected void postUpdate() {
         if(this.active) {
             double x = Minecraft.getInstance().mouseHandler.xpos();
             double y = Minecraft.getInstance().mouseHandler.ypos();

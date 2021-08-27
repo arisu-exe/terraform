@@ -17,9 +17,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fmlclient.gui.GuiUtils;
 import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.Arrays;
 
 // TODO Clip in edit mode, like in Spectator Mode
 
@@ -136,6 +139,11 @@ public class MainTerraform  {
 
                         button.render(event.getMatrixStack(), i, j, event.getPartialTicks());
                     }
+                }
+                if(Arrays.stream(MainTerraform.tools).anyMatch(Tool::hasSettings)) {
+                    event.getMatrixStack().pushPose();
+                    GuiUtils.drawGradientRect(event.getMatrixStack().last().pose(), 400, 15, 120, 120, 15, 0x000000, 0x000000);
+                    event.getMatrixStack().popPose();
                 }
             }
         }

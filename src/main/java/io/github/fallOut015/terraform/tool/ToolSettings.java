@@ -12,7 +12,12 @@ public class ToolSettings {
     public <T> T get(String key) {
         return (T) this.types.get(key);
     }
+
     public void set(String key, Object value) {
         this.types.replace(key, value);
+    }
+
+    public boolean hasSettings() {
+        return !this.types.isEmpty();
     }
 }

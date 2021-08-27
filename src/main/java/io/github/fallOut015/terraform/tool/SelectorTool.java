@@ -30,7 +30,11 @@ public class SelectorTool extends Tool {
         selectedPos = new BlockPos(Minecraft.getInstance().hitResult.getLocation());
     }
     @Override
-    protected void onUpdate() {
+    protected void calculatePointer() {
+
+    }
+    @Override
+    protected void postUpdate() {
         //RenderHelper.renderHitOutline(poseStack, vertexconsumer2, mainCamera.getEntity(), d0, d1, d2, blockpos, blockstate, 0, 0, 1.0f, 0.4f);
     }
     @Override
