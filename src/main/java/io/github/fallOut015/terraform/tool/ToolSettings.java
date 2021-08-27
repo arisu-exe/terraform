@@ -1,6 +1,7 @@
 package io.github.fallOut015.terraform.tool;
 
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ToolSettings {
     final Map<String, Object> types;
@@ -19,5 +20,9 @@ public class ToolSettings {
 
     public boolean hasSettings() {
         return !this.types.isEmpty();
+    }
+
+    public void forEach(BiConsumer<String, Object> action) {
+        this.types.forEach(action);
     }
 }

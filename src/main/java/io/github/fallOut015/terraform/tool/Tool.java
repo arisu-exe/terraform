@@ -49,6 +49,9 @@ public abstract class Tool {
     public boolean hasSettings() {
         return this.settings.hasSettings();
     }
+    public ToolSettings getSettings() {
+        return this.settings;
+    }
 
     protected abstract void calculatePointer();
     protected abstract void postUpdate();

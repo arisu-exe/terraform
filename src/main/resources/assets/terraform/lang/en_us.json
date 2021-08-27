@@ -7,5 +7,9 @@
 
   "gui.left_mouse_button" : "L",
   "gui.right_mouse_button" : "R",
-  "gui.middle_mouse_button" : "M"
+  "gui.middle_mouse_button" : "M",
+
+  "gui.diameter" : "Diameter",
+  "gui.shape" : "Shape",
+  "gui.paintNonSolidBlocks" : "Paint Non-Solid Blocks"
 }

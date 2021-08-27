@@ -2,9 +2,12 @@ package io.github.fallOut015.terraform;
 
 import io.github.fallOut015.terraform.client.gui.components.ToolButton;
 import io.github.fallOut015.terraform.tool.Tool;
+import io.github.fallOut015.terraform.tool.ToolSettings;
 import io.github.fallOut015.terraform.tool.Tools;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.MoverType;
 import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -23,6 +26,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO Clip in edit mode, like in Spectator Mode
 
@@ -142,8 +146,15 @@ public class MainTerraform  {
                 }
                 if(Arrays.stream(MainTerraform.tools).anyMatch(Tool::hasSettings)) {
                     event.getMatrixStack().pushPose();
-                    GuiUtils.drawGradientRect(event.getMatrixStack().last().pose(), 500, 15, 120, 120, 15, 0x000000, 0x000000);
+                    GuiUtils.drawGradientRect(event.getMatrixStack().last().pose(), 300, 15, 120, 120, 15, 0x000000, 0x000000);
                     Tool settingsRenderedTool = Arrays.stream(MainTerraform.tools).filter(Tool::hasSettings).toArray(Tool[]::new)[0];
+                    ToolSettings settings = settingsRenderedTool.getSettings();
+                    int x = 20;
+                    AtomicInteger y = new AtomicInteger(120);
+                    settings.forEach((key, value) -> {
+                        Gui.drawString(event.getMatrixStack(), Minecraft.getInstance().font, new TranslatableComponent("gui." + key), x, y.get(), 0xFFFFFF);
+                        y.addAndGet(12);
+                    });
                     event.getMatrixStack().popPose();
                 }
             }
