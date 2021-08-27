@@ -2,12 +2,14 @@ package io.github.fallOut015.terraform.tool;
 
 import net.minecraft.client.Minecraft;
 
+import java.util.Map;
+
 public class RotatorTool extends Tool {
     boolean active;
     double oldx, oldy;
 
     public RotatorTool() {
-        super(120, 0, "rotator");
+        super(120, 0, "rotator", Map.of());
     }
 
     @Override

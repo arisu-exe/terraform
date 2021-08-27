@@ -1,29 +1,46 @@
 package io.github.fallOut015.terraform.tool;
 
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.Map;
 
 public class MoverTool extends Tool {
+    boolean active;
+    double oldx, oldy;
+
     public MoverTool() {
-        super(100, 0, "mover");
+        super(100, 0, "mover", Map.of());
     }
 
     @Override
     public void onPress() {
-
+        this.active = true;
+        this.oldx = Minecraft.getInstance().mouseHandler.xpos();
+        this.oldy = Minecraft.getInstance().mouseHandler.ypos();
     }
     @Override
     protected void onUpdate() {
+        if(this.active) {
+            double x = Minecraft.getInstance().mouseHandler.xpos();
+            double y = Minecraft.getInstance().mouseHandler.ypos();
 
+            Vec3 rightVec = new Vec3(Minecraft.getInstance().gameRenderer.getMainCamera().getLeftVector()).scale(0.5d * (x - this.oldx));
+            Vec3 upVec = new Vec3(Minecraft.getInstance().gameRenderer.getMainCamera().getUpVector()).scale(0.5d * (y - this.oldy));
+            Minecraft.getInstance().gameRenderer.getMainCamera().getEntity().move(MoverType.SELF, rightVec.add(upVec));
+
+            this.oldx = x;
+            this.oldy = y;
+        }
     }
     @Override
     public void onRelease() {
+        this.active = false;
+    }
 
-    }
     @Override
-    public void renderOutline(final RenderWorldLastEvent event) {
-    }
-    @Override
-    public boolean rendersOutline() {
+    protected boolean rendersOutline() {
         return false;
     }
 }

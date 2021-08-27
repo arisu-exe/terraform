@@ -35,6 +35,7 @@ public class ToolButton extends ImageButton {
         this.tool = tool;
         this.u = tool.getU();
         this.v = tool.getV();
+        this.mouseButton = -1;
     }
 
     @Override

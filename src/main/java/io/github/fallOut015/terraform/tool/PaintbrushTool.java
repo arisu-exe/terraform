@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -17,11 +18,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import java.util.Map;
+
 public class PaintbrushTool extends Tool {
     boolean active;
 
     public PaintbrushTool() {
-        super(80, 0, "paintbrush");
+        super(80, 0, "paintbrush", Map.of("diameter", 1, "shape", PaintbrushShape.CIRCLE));
     }
 
     @Override
@@ -31,7 +34,14 @@ public class PaintbrushTool extends Tool {
     @Override
     protected void onUpdate() {
         if(this.active) {
-            Minecraft.getInstance().level.setBlock(new BlockPos(Minecraft.getInstance().hitResult.getLocation()), Blocks.STONE.defaultBlockState(), 0);
+            BlockPos pos = new BlockPos(Minecraft.getInstance().hitResult.getLocation());
+            for(double i = -(((double) this.get("diameter")) / 2d); i < (double) this.get("diameter") / 2d; ++ i) {
+                for(double j = -(((double) this.get("diameter")) / 2d); j < (double) this.get("diameter") / 2d; ++ j) {
+                    if(!Minecraft.getInstance().level.isEmptyBlock(pos.offset(i, 0, j))) {
+                        Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
+                    }
+                }
+            }
         }
     }
     @Override
@@ -88,5 +98,9 @@ public class PaintbrushTool extends Tool {
         posestack.popPose();
         RenderSystem.applyModelViewMatrix();
         multibuffersource$buffersource.endBatch(Sheets.translucentCullBlockSheet());
+    }
+
+    public enum PaintbrushShape {
+        CIRCLE, SQUARE
     }
 }

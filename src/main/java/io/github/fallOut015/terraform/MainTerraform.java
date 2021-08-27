@@ -5,7 +5,6 @@ import io.github.fallOut015.terraform.tool.Tool;
 import io.github.fallOut015.terraform.tool.Tools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.MoverType;
 import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -120,6 +119,7 @@ public class MainTerraform  {
         public static void onMouseScroll(final InputEvent.MouseScrollEvent event) {
             if(MainTerraform.editing && Minecraft.getInstance().screen == null) {
                 event.setCanceled(true);
+                // TODO zoom in on cursor, not just forward
                 Minecraft.getInstance().gameRenderer.getMainCamera().getEntity().move(MoverType.SELF, Minecraft.getInstance().gameRenderer.getMainCamera().getEntity().getViewVector(1.0f).scale(2 * event.getScrollDelta()));
             }
         }

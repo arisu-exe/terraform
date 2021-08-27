@@ -4,15 +4,18 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import java.util.Map;
+
 public abstract class Tool {
     final int u, v;
     final TranslatableComponent translated;
-    // Settings
+    final ToolSettings settings;
 
-    public Tool(final int u, final int v, String name) {
+    public Tool(final int u, final int v, String name, Map<?, ?> settings) {
         this.u = u;
         this.v = v;
         this.translated = new TranslatableComponent("gui." + name);
+        this.settings = new ToolSettings(settings);
     }
 
     public abstract void onPress();
@@ -35,6 +38,12 @@ public abstract class Tool {
             this.renderOutline(event);
         }
         this.onUpdate();
+    }
+    public <T> T get(String key) {
+        return this.settings.get(key);
+    }
+    public void set(String key, Object value) {
+        this.settings.set(key, value);
     }
 
     protected abstract void onUpdate();

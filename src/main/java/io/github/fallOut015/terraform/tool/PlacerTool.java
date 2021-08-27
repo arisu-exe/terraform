@@ -22,11 +22,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import java.util.Map;
+
 public class PlacerTool extends Tool {
     boolean active;
 
     public PlacerTool() {
-        super(0, 0, "placer");
+        super(0, 0, "placer", Map.of());
     }
 
     @Override

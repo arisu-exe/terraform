@@ -16,11 +16,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import java.util.Map;
+
 public class SelectorTool extends Tool {
     BlockPos selectedPos;
 
     public SelectorTool() {
-        super(20, 0, "selector");
+        super(20, 0, "selector", Map.of());
     }
 
     @Override
