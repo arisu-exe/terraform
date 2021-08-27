@@ -25,7 +25,11 @@ public class PaintbrushTool extends Tool {
     boolean active;
 
     public PaintbrushTool() {
-        super(80, 0, "paintbrush", Map.of("diameter", 10, "shape", PaintbrushShape.SQUARE, "paintNonSolidBlocks", false));
+        super(80, 0, "paintbrush", Map.of(
+            "diameter", 10,
+            "shape", PaintbrushShape.SQUARE,
+            "paintNonSolidBlocks", false
+        ));
     }
 
     @Override
@@ -95,12 +99,9 @@ public class PaintbrushTool extends Tool {
                     if(!Minecraft.getInstance().level.isEmptyBlock(pos.offset(i, 0, j))) {
                         if(paintsNonSolidBlocks) {
                             Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
-                        } else {
-                            if(Minecraft.getInstance().level.getBlockState(pos.offset(i, 0, j)).getMaterial().isSolid()) {
-                                Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
-                            }
+                        } else if(Minecraft.getInstance().level.getBlockState(pos.offset(i, 0, j)).getMaterial().isSolid()) {
+                            Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
                         }
-
                     }
                 }
             }
