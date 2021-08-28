@@ -10,8 +10,9 @@ public class CheckboxWidget extends Checkbox implements IToolSetting<Boolean> {
     final String key;
     final Component translated;
 
-    public CheckboxWidget(final Tool tool, final String key, int x, int y, int width, int height, boolean currentValue) {
-        super(x, y, width, height, Component.nullToEmpty(""), currentValue, false);
+    public CheckboxWidget(final Tool tool, final String key, int x, int y, boolean currentValue) {
+        super(x, y, 20, 20, Component.nullToEmpty(""), currentValue, false);
+
         this.tool = tool;
         this.key = key;
         this.translated = new TranslatableComponent("gui." + key);

@@ -1,10 +1,12 @@
 package io.github.fallOut015.terraform;
 
+import io.github.fallOut015.terraform.client.gui.components.IToolSetting;
 import io.github.fallOut015.terraform.client.gui.components.ToolButton;
 import io.github.fallOut015.terraform.tool.Tool;
 import io.github.fallOut015.terraform.tool.Tools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.MoverType;
@@ -110,6 +112,16 @@ public class MainTerraform  {
                         button.onClick(i, j);
                         pressed = true;
                         break;
+                    }
+                }
+                if(Arrays.stream(MainTerraform.tools).anyMatch(Tool::hasSettings)) {
+                    Tool settingsRenderedTool = Arrays.stream(MainTerraform.tools).filter(Tool::hasSettings).toArray(Tool[]::new)[0];
+                    for(IToolSetting<?> widget : settingsRenderedTool.getSettings()) {
+                        if(widget instanceof AbstractWidget abstractWidget) {
+                            if(abstractWidget.isHovered()) {
+                                abstractWidget.onClick(i, j);
+                            }
+                        }
                     }
                 }
                 if(!pressed) {

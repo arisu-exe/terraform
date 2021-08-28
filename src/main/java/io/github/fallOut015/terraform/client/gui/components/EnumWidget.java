@@ -25,7 +25,7 @@ public class EnumWidget<T extends IEnumSetting> extends AbstractButton implement
 
     @Override
     public String getKey() {
-        return null;
+        return this.key;
     }
 
     @Override

@@ -3,12 +3,14 @@ package io.github.fallOut015.terraform.tool;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.fallOut015.terraform.client.gui.components.IToolSetting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,6 +48,7 @@ public abstract class Tool {
         }
         this.postUpdate();
     }
+    @Nullable
     public Object get(String key) {
         for(IToolSetting<?> widget : this.settings) {
             if(widget.getKey().equals(key)) {
@@ -67,14 +70,21 @@ public abstract class Tool {
     public void renderSettings(PoseStack poseStack, int mx, int my, float partialTicks) {
         for(IToolSetting<?> widget : this.settings) {
             if(widget instanceof AbstractWidget abstractWidget) {
-                Gui.drawString(poseStack, Minecraft.getInstance().font, widget.getTranslated(), abstractWidget.x, abstractWidget.y, 0xFFFFFF);
+                poseStack.popPose();
+                int width = widget.getTranslated().getString().length() * 8;
+                poseStack.translate(width, 0, 0);
+                Gui.drawString(poseStack, Minecraft.getInstance().font, widget.getTranslated(), abstractWidget.x - width, abstractWidget.y, 0xFFFFFF);
 
                 abstractWidget.render(poseStack, mx, my, partialTicks);
+                poseStack.pushPose();
             }
         }
     }
     public void addSetting(IToolSetting<?> e) {
         this.settings.add(e);
+    }
+    public List<IToolSetting<?>> getSettings() {
+        return this.settings;
     }
 
     protected abstract void calculatePointer();

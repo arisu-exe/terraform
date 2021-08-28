@@ -28,9 +28,9 @@ public class PaintbrushTool extends Tool {
     public PaintbrushTool() {
         super(80, 0, "paintbrush");
 
-        this.addSetting(new SliderWidget(this, "diameter", 20, 108 + 12 * 0, 128, 32, 1, 16, 1));
-        this.addSetting(new EnumWidget<>(this, "shape", 20, 108 + 12 * 1, 128, 32, PaintbrushShape.SQUARE));
-        this.addSetting(new CheckboxWidget(this, "paintNonSolidBlocks", 20, 108 + 12 * 2, 32, 32, false));
+        //this.addSetting(new SliderWidget(this, "diameter", 20, 108 + 12 * 0, 128, 32, 1, 16, 10));
+        //this.addSetting(new EnumWidget<>(this, "shape", 20, 108 + 12 * 1, 128, 32, PaintbrushShape.SQUARE));
+        this.addSetting(new CheckboxWidget(this, "paintNonSolidBlocks", 20, 108 + 12 * 2, false));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class PaintbrushTool extends Tool {
     protected void postUpdate() {
         if(this.active) {
             BlockPos pos = new BlockPos(Minecraft.getInstance().hitResult.getLocation()).below();
-            ((PaintbrushShape) this.get("shape")).accept(pos, (Integer) this.get("diameter"), (Boolean) this.get("paintNonSolidBlocks"));
+            //((PaintbrushShape) this.get("shape")).accept(pos, (Double) this.get("diameter"), (Boolean) this.get("paintNonSolidBlocks"));
         }
     }
     @Override
@@ -70,11 +70,9 @@ public class PaintbrushTool extends Tool {
         if (hitresult != null && hitresult.getType() == HitResult.Type.BLOCK) {
             BlockPos blockpos = ((BlockHitResult) hitresult).getBlockPos();
             BlockState blockstate = Minecraft.getInstance().level.getBlockState(blockpos);
-            if (true) {
-                if (Minecraft.getInstance().level.getWorldBorder().isWithinBounds(blockpos)) {
-                    VertexConsumer vertexconsumer2 = multibuffersource$buffersource.getBuffer(RenderType.lines());
-                    RenderHelper.renderHitOutline(poseStack, vertexconsumer2, mainCamera.getEntity(), d0, d1, d2, blockpos, blockstate, 0, 0, 1.0f, 0.4f);
-                }
+            if (Minecraft.getInstance().level.getWorldBorder().isWithinBounds(blockpos)) {
+                VertexConsumer vertexconsumer2 = multibuffersource$buffersource.getBuffer(RenderType.lines());
+                RenderHelper.renderHitOutline(poseStack, vertexconsumer2, mainCamera.getEntity(), d0, d1, d2, blockpos, blockstate, 0, 0, 1.0f, 0.4f);
             }
         }
 
@@ -90,13 +88,13 @@ public class PaintbrushTool extends Tool {
         multibuffersource$buffersource.endBatch(Sheets.translucentCullBlockSheet());
     }
 
-    public enum PaintbrushShape implements TriConsumer<BlockPos, Integer, Boolean>, IEnumSetting {
+    public enum PaintbrushShape implements TriConsumer<BlockPos, Double, Boolean>, IEnumSetting {
         CIRCLE((pos, diameter, paintsNonSolidBlocks) -> {
             // TODO
         }),
         SQUARE((pos, diameter, paintsNonSolidBlocks) -> {
-            for(double i = -(((double) ((int) diameter)) / 2d); i < (((double) ((int) diameter)) / 2d); ++ i) {
-                for(double j = -(((double) ((int) diameter)) / 2d); j < (((double) ((int) diameter)) / 2d); ++ j) {
+            for(double i = -diameter / 2d; i < diameter / 2d; ++ i) {
+                for(double j = -diameter / 2d; j < diameter / 2d; ++ j) {
                     if(!Minecraft.getInstance().level.isEmptyBlock(pos.offset(i, 0, j))) {
                         if(paintsNonSolidBlocks) {
                             Minecraft.getInstance().level.setBlock(pos.offset(i, 0, j), Blocks.STONE.defaultBlockState(), 0);
@@ -108,15 +106,15 @@ public class PaintbrushTool extends Tool {
             }
         });
 
-        final TriConsumer<BlockPos, Integer, Boolean> placeMethod;
+        final TriConsumer<BlockPos, Double, Boolean> placeMethod;
 
-        PaintbrushShape(TriConsumer<BlockPos, Integer, Boolean> placeMethod) {
+        PaintbrushShape(TriConsumer<BlockPos, Double, Boolean> placeMethod) {
             this.placeMethod = placeMethod;
         }
 
         @Override
-        public void accept(BlockPos blockPos, Integer integer, Boolean paintNonSolidBlocks) {
-            this.placeMethod.accept(blockPos, integer, paintNonSolidBlocks);
+        public void accept(BlockPos blockPos, Double diameter, Boolean paintsNonSolidBlocks) {
+            this.placeMethod.accept(blockPos, diameter, paintsNonSolidBlocks);
         }
     }
 }
