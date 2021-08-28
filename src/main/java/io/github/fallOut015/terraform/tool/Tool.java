@@ -1,21 +1,28 @@
 package io.github.fallOut015.terraform.tool;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
+import io.github.fallOut015.terraform.client.gui.components.IEnumSetting;
+import io.github.fallOut015.terraform.client.gui.components.IToolSetting;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import java.util.List;
 import java.util.Map;
 
 public abstract class Tool {
     final int u, v;
     final TranslatableComponent translated;
-    final ToolSettings settings;
+    List<IToolSetting> settings;
 
-    public Tool(final int u, final int v, String name, Map<?, ?> settings) {
+    public Tool(final int u, final int v, String name) {
         this.u = u;
         this.v = v;
         this.translated = new TranslatableComponent("gui." + name);
-        this.settings = new ToolSettings(settings);
     }
 
     public abstract void onPress();
@@ -40,17 +47,31 @@ public abstract class Tool {
         }
         this.postUpdate();
     }
-    public <T> T get(String key) {
-        return this.settings.get(key);
+    public Object get(String key) {
+        for(IToolSetting widget : this.settings) {
+            if(widget.getKey().equals(key)) {
+                return widget.getSettingValue();
+            }
+        }
+        return null;
     }
     public void set(String key, Object value) {
-        this.settings.set(key, value);
+        for(IToolSetting widget : this.settings) {
+            if(widget.getKey().equals(key)) {
+                widget.setSettingValue(value);
+            }
+        }
     }
     public boolean hasSettings() {
-        return this.settings.hasSettings();
+        return !this.settings.isEmpty();
     }
-    public ToolSettings getSettings() {
-        return this.settings;
+    public void renderSettings(PoseStack poseStack, int mx, int my, float partialTicks) {
+        for(IToolSetting widget : this.settings) {
+            widget.render(poseStack, mx, my, partialTicks);
+        }
+    }
+    public void addSetting(IToolSetting e) {
+        this.settings.add(e);
     }
 
     protected abstract void calculatePointer();

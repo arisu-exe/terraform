@@ -2,7 +2,6 @@ package io.github.fallOut015.terraform;
 
 import io.github.fallOut015.terraform.client.gui.components.ToolButton;
 import io.github.fallOut015.terraform.tool.Tool;
-import io.github.fallOut015.terraform.tool.ToolSettings;
 import io.github.fallOut015.terraform.tool.Tools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -134,12 +133,13 @@ public class MainTerraform  {
         @SubscribeEvent
         public static void onRenderGameOverlay(final RenderGameOverlayEvent event) {
             if (MainTerraform.editing) {
+                int i = (int) (Minecraft.getInstance().mouseHandler.xpos() * (double) Minecraft.getInstance().getWindow().getGuiScaledWidth() / (double) Minecraft.getInstance().getWindow().getScreenWidth());
+                int j = (int) (Minecraft.getInstance().mouseHandler.ypos() * (double) Minecraft.getInstance().getWindow().getGuiScaledHeight() / (double) Minecraft.getInstance().getWindow().getScreenHeight());
+
                 if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) {
                     event.setCanceled(true);
                 } else if (MainTerraform.editing && event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
                     for(Button button : MainTerraform.buttons) {
-                        int i = (int) (Minecraft.getInstance().mouseHandler.xpos() * (double) Minecraft.getInstance().getWindow().getGuiScaledWidth() / (double) Minecraft.getInstance().getWindow().getScreenWidth());
-                        int j = (int) (Minecraft.getInstance().mouseHandler.ypos() * (double) Minecraft.getInstance().getWindow().getGuiScaledHeight() / (double) Minecraft.getInstance().getWindow().getScreenHeight());
 
                         button.render(event.getMatrixStack(), i, j, event.getPartialTicks());
                     }
@@ -148,9 +148,10 @@ public class MainTerraform  {
                     event.getMatrixStack().pushPose();
                     GuiUtils.drawGradientRect(event.getMatrixStack().last().pose(), 300, 15, 120, 120, 15, 0x000000, 0x000000);
                     Tool settingsRenderedTool = Arrays.stream(MainTerraform.tools).filter(Tool::hasSettings).toArray(Tool[]::new)[0];
-                    ToolSettings settings = settingsRenderedTool.getSettings();
+                    settingsRenderedTool.renderSettings(event.getMatrixStack(), i, j, event.getPartialTicks());
+
                     int x = 20;
-                    AtomicInteger y = new AtomicInteger(120);
+                    AtomicInteger y = new AtomicInteger(108);
                     settings.forEach((key, value) -> {
                         Gui.drawString(event.getMatrixStack(), Minecraft.getInstance().font, new TranslatableComponent("gui." + key), x, y.get(), 0xFFFFFF);
                         y.addAndGet(12);

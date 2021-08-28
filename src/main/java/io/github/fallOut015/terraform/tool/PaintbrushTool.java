@@ -4,6 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.fallOut015.terraform.client.gui.RenderHelper;
+import io.github.fallOut015.terraform.client.gui.components.CheckboxWidget;
+import io.github.fallOut015.terraform.client.gui.components.EnumWidget;
+import io.github.fallOut015.terraform.client.gui.components.IEnumSetting;
+import io.github.fallOut015.terraform.client.gui.components.SliderWidget;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,18 +22,15 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import org.apache.logging.log4j.util.TriConsumer;
 
-import java.util.Map;
-import java.util.function.BiConsumer;
-
 public class PaintbrushTool extends Tool {
     boolean active;
 
     public PaintbrushTool() {
-        super(80, 0, "paintbrush", Map.of(
-            "diameter", 10,
-            "shape", PaintbrushShape.SQUARE,
-            "paintNonSolidBlocks", false
-        ));
+        super(80, 0, "paintbrush");
+
+        this.addSetting(new SliderWidget(this, "diameter", 20, 108 + 12 * 0, 128, 32, 1, 16, 1));
+        this.addSetting(new EnumWidget<>(this, "shape", 20, 108 + 12 * 1, 128, 32, PaintbrushShape.SQUARE));
+        this.addSetting(new CheckboxWidget(this, "paintNonSolidBlocks", 20, 108 + 12 * 2, 32, 32, false));
     }
 
     @Override
@@ -89,7 +90,7 @@ public class PaintbrushTool extends Tool {
         multibuffersource$buffersource.endBatch(Sheets.translucentCullBlockSheet());
     }
 
-    public enum PaintbrushShape implements TriConsumer<BlockPos, Integer, Boolean> {
+    public enum PaintbrushShape implements TriConsumer<BlockPos, Integer, Boolean>, IEnumSetting {
         CIRCLE((pos, diameter, paintsNonSolidBlocks) -> {
             // TODO
         }),
