@@ -22,7 +22,7 @@ public class SelectorTool extends Tool {
     BlockPos selectedPos;
 
     public SelectorTool() {
-        super(20, 0, "selector", Map.of());
+        super(20, 0, "selector");
     }
 
     @Override

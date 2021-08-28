@@ -11,7 +11,7 @@ public class MoverTool extends Tool {
     double oldx, oldy;
 
     public MoverTool() {
-        super(100, 0, "mover", Map.of());
+        super(100, 0, "mover");
     }
 
     @Override

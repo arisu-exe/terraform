@@ -4,10 +4,12 @@ import io.github.fallOut015.terraform.tool.Tool;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class EnumWidget<T extends IEnumSetting> extends AbstractButton implements IToolSetting<T> {
     final Tool tool;
     final String key;
+    final Component translated;
 
     T enumValue;
 
@@ -16,6 +18,7 @@ public class EnumWidget<T extends IEnumSetting> extends AbstractButton implement
 
         this.tool = tool;
         this.key = key;
+        this.translated = new TranslatableComponent("gui." + key);
 
         this.enumValue = enumValue;
     }
@@ -26,17 +29,22 @@ public class EnumWidget<T extends IEnumSetting> extends AbstractButton implement
     }
 
     @Override
-    public void setSettingValue(T value) {
-
+    public void setSettingValue(Object value) {
+        this.enumValue = (T) value;
     }
     @Override
     public T getSettingValue() {
-        return null;
+        return this.enumValue;
     }
 
     @Override
     public Tool getTool() {
         return null;
+    }
+
+    @Override
+    public Component getTranslated() {
+        return this.translated;
     }
 
     @Override

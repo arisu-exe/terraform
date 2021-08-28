@@ -3,15 +3,18 @@ package io.github.fallOut015.terraform.client.gui.components;
 import io.github.fallOut015.terraform.tool.Tool;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class CheckboxWidget extends Checkbox implements IToolSetting<Boolean> {
     final Tool tool;
     final String key;
+    final Component translated;
 
     public CheckboxWidget(final Tool tool, final String key, int x, int y, int width, int height, boolean currentValue) {
         super(x, y, width, height, Component.nullToEmpty(""), currentValue, false);
         this.tool = tool;
         this.key = key;
+        this.translated = new TranslatableComponent("gui." + key);
     }
 
     @Override
@@ -20,8 +23,8 @@ public class CheckboxWidget extends Checkbox implements IToolSetting<Boolean> {
     }
 
     @Override
-    public void setSettingValue(Boolean value) {
-        if(value != this.getSettingValue()) {
+    public void setSettingValue(Object value) {
+        if((Boolean) value != this.getSettingValue()) {
             this.onPress();
         }
     }
@@ -33,5 +36,10 @@ public class CheckboxWidget extends Checkbox implements IToolSetting<Boolean> {
     @Override
     public Tool getTool() {
         return this.tool;
+    }
+
+    @Override
+    public Component getTranslated() {
+        return this.translated;
     }
 }

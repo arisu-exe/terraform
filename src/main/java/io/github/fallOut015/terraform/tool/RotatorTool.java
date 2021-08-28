@@ -9,7 +9,7 @@ public class RotatorTool extends Tool {
     double oldx, oldy;
 
     public RotatorTool() {
-        super(120, 0, "rotator", Map.of());
+        super(120, 0, "rotator");
     }
 
     @Override

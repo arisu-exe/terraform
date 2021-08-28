@@ -149,13 +149,6 @@ public class MainTerraform  {
                     GuiUtils.drawGradientRect(event.getMatrixStack().last().pose(), 300, 15, 120, 120, 15, 0x000000, 0x000000);
                     Tool settingsRenderedTool = Arrays.stream(MainTerraform.tools).filter(Tool::hasSettings).toArray(Tool[]::new)[0];
                     settingsRenderedTool.renderSettings(event.getMatrixStack(), i, j, event.getPartialTicks());
-
-                    int x = 20;
-                    AtomicInteger y = new AtomicInteger(108);
-                    settings.forEach((key, value) -> {
-                        Gui.drawString(event.getMatrixStack(), Minecraft.getInstance().font, new TranslatableComponent("gui." + key), x, y.get(), 0xFFFFFF);
-                        y.addAndGet(12);
-                    });
                     event.getMatrixStack().popPose();
                 }
             }

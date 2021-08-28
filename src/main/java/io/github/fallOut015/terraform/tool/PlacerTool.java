@@ -28,7 +28,7 @@ public class PlacerTool extends Tool {
     boolean active;
 
     public PlacerTool() {
-        super(0, 0, "placer", Map.of());
+        super(0, 0, "placer");
     }
 
     @Override

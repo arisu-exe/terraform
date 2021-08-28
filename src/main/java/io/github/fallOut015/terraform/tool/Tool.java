@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import io.github.fallOut015.terraform.client.gui.components.IEnumSetting;
 import io.github.fallOut015.terraform.client.gui.components.IToolSetting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Widget;
@@ -17,7 +19,7 @@ import java.util.Map;
 public abstract class Tool {
     final int u, v;
     final TranslatableComponent translated;
-    List<IToolSetting> settings;
+    List<IToolSetting<?>> settings;
 
     public Tool(final int u, final int v, String name) {
         this.u = u;
@@ -48,7 +50,7 @@ public abstract class Tool {
         this.postUpdate();
     }
     public Object get(String key) {
-        for(IToolSetting widget : this.settings) {
+        for(IToolSetting<?> widget : this.settings) {
             if(widget.getKey().equals(key)) {
                 return widget.getSettingValue();
             }
@@ -56,7 +58,7 @@ public abstract class Tool {
         return null;
     }
     public void set(String key, Object value) {
-        for(IToolSetting widget : this.settings) {
+        for(IToolSetting<?> widget : this.settings) {
             if(widget.getKey().equals(key)) {
                 widget.setSettingValue(value);
             }
@@ -66,11 +68,15 @@ public abstract class Tool {
         return !this.settings.isEmpty();
     }
     public void renderSettings(PoseStack poseStack, int mx, int my, float partialTicks) {
-        for(IToolSetting widget : this.settings) {
-            widget.render(poseStack, mx, my, partialTicks);
+        for(IToolSetting<?> widget : this.settings) {
+            if(widget instanceof AbstractWidget abstractWidget) {
+                Gui.drawString(poseStack, Minecraft.getInstance().font, widget.getTranslated(), abstractWidget.x, abstractWidget.y, 0xFFFFFF);
+
+                abstractWidget.render(poseStack, mx, my, partialTicks);
+            }
         }
     }
-    public void addSetting(IToolSetting e) {
+    public void addSetting(IToolSetting<?> e) {
         this.settings.add(e);
     }
 
