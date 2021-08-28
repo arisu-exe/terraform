@@ -1,20 +1,16 @@
 package io.github.fallOut015.terraform.tool;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Pair;
-import io.github.fallOut015.terraform.client.gui.components.IEnumSetting;
 import io.github.fallOut015.terraform.client.gui.components.IToolSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Tool {
     final int u, v;
@@ -25,6 +21,7 @@ public abstract class Tool {
         this.u = u;
         this.v = v;
         this.translated = new TranslatableComponent("gui." + name);
+        this.settings = new LinkedList<>();
     }
 
     public abstract void onPress();
